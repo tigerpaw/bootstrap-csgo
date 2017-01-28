@@ -18,3 +18,4 @@ firewall-cmd --reload
 
 su - steam
 cd /steam && curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -
+bash steamcmd.sh +login anonymous +force_install_dir csgo_ds +app_update 740 +quit
