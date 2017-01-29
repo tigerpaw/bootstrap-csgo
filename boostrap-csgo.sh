@@ -21,7 +21,7 @@ main() {
 
   if [ $1 == "install" ]; then
     # Get GSLT if it isn't set
-    if [ "$GSLTOKEN" == "" ]; then
+    if [ -n "$GSLTOKEN" ]; then
       printf "Please enter your Game Server License Token (GSLT): "
       read GSLTOKEN
     fi
