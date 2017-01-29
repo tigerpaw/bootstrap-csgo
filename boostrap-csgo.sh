@@ -2,7 +2,7 @@
 # bootstrap-csgo.sh
 # Version 0.3
 # -
-# curl -s https://raw.githubusercontent.com/tigerpaw/bootstrap-csgo/master/boostrap-csgo.sh | bash -s (install | update | repair)
+# curl -s https://raw.githubusercontent.com/tigerpaw/bootstrap-csgo/master/boostrap-csgo.sh | bash -s (install <GAME_SERVER_LICENSE_TOKEN> | update | repair)
 # Get a Game Server License Token: https://steamcommunity.com/dev/managegameservers
 
 SERVICE_USR="steam"
@@ -10,25 +10,26 @@ INSTALL_DIR="/steam"
 SRCDS_DIR="$INSTALL_DIR/csgo_ds"
 CSGO_DIR="$SRCDS_DIR/csgo"
 STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"
-GSLTOKEN="0"
+GSLTOKEN="$2"
 
 main() {
   printf "CS:GO Dedicated Server Bootstrapper (v0.3) for RHEL/CentOS 7.x\n===\n"
-
-  # Return usage on default call
-  if [ -z $1 ]; then
-    bootout "Usage: bootstrap-csgo.sh (install | update | repair)\n\n"
-    exit 0
-  fi
 
   # Check if RHEL/CentOS 7.x
   CHK_RHEL=$(cat /etc/redhat-release | grep 7)
   if [ -z "$CHK_RHEL" ]; then bootout "This tool is requires RHEL/CentOS 7.x\n" && exit 1; fi
 
+  # Return usage on default call
+  if [ -z $1 ]; then
+    bootout "Usage: bootstrap-csgo.sh (install <GSLT> | update | repair)\nExample: bootstrap-csgo.sh install XXXXXXXXXXXXXXXXXXXXXX\n\n"
+    exit 0
+  fi
+
   if [ $1 == "install" ]; then
     # Get GSLT if it isn't set
-    if [ "$GSLTOKEN" == "0" ]; then
-      read -p "Game Server License Token (GSLT): " GSLTOKEN
+    if [ -z $2 ]; then
+      bootout "No game server license token provided, run 'bootstrap-csgo.sh' for usage"
+      exit 0
     fi
 
     # Enable EPEL if it isn't enabled
