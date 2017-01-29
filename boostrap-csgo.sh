@@ -21,7 +21,7 @@ main() {
   if [ $1 == "install" ]; then
     # Get GSLT
     read -p "Game Server License Token (GSLT): " GSLTOKEN
-
+    exit
     # Enable EPEL if it isn't enabled
     bootout "Enabling EPEL repository\n"
     CHK_EPEL=$(yum list installed | grep epel-release)
