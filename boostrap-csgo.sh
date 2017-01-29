@@ -21,7 +21,7 @@ main() {
 
   if [ $1 == "install" ]; then
     # Get GSLT if it isn't set
-    if [ "$GSLTOKEN" == "0" ]; then
+    if [ "$GSLTOKEN" -eq "0" ]; then
       read -p "Game Server License Token (GSLT): " GSLTOKEN
     fi
 
