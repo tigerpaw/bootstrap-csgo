@@ -19,11 +19,10 @@ main() {
   CHK_RHEL=$(cat /etc/redhat-release | grep 7)
   if [ -z "$CHK_RHEL" ]; then bootout "This tool is requires RHEL/CentOS 7.x\n" && exit 1; fi
 
-  if [ $1=="install" ]; then
+  if [ $1 == "install" ]; then
     # Get GSLT if it isn't set
     if [ -z "$GSLTOKEN" ]; then
-      printf "Please enter your Game Server License Token (GSLT): "
-      read GSLTOKEN
+      read -p "Game Server License Token (GSLT): " GSLTOKEN
     fi
 
     # Enable EPEL if it isn't enabled
@@ -112,16 +111,16 @@ main() {
 
     # Build default configs if they don't exist
     F_AUTOEXEC="$CSGO_DIR/cfg/autoexec.cfg"
-    if [ ! -f "$FILE_AUTOEXEC" ]; then
+    if [ ! -f "$F_AUTOEXEC" ]; then
       bootout "Creating autoexec.cfg\n"
-      echo "sv_setsteamaccount \"$GSLTOKEN\"" >> $FILE_AUTOEXEC
-      echo "log on" >> $FILE_AUTOEXEC
-      echo "rcon_password \"$(date +%s)\"" >> $FILE_AUTOEXEC
-      echo "sv_cheats \"\"" >> $FILE_AUTOEXEC
-      echo "sv_cheats 0" >> $FILE_AUTOEXEC
-      echo "sv_lan 0" >> $FILE_AUTOEXEC
-      echo "exec banned_user.cfg" >> $FILE_AUTOEXEC
-      echo "exec banned_ip.cfg" >> $FILE_AUTOEXEC
+      echo "sv_setsteamaccount \"$GSLTOKEN\"" >> $F_AUTOEXEC
+      echo "log on" >> $F_AUTOEXEC
+      echo "rcon_password \"$(date +%s)\"" >> $F_AUTOEXEC
+      echo "sv_cheats \"\"" >> $F_AUTOEXEC
+      echo "sv_cheats 0" >> $F_AUTOEXEC
+      echo "sv_lan 0" >> $F_AUTOEXEC
+      echo "exec banned_user.cfg" >> $F_AUTOEXEC
+      echo "exec banned_ip.cfg" >> $F_AUTOEXEC
     fi
 
     F_SERVER="$CSGO_DIR/cfg/server.cfg"
