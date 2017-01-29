@@ -21,14 +21,17 @@ main() {
 
   # Return usage on default call
   if [ -z $1 ]; then
-    bootout "Usage: bootstrap-csgo.sh (install <GSLT> | update | repair)\nExample: bootstrap-csgo.sh install XXXXXXXXXXXXXXXXXXXXXX\n\n"
+    bootout "Usage: bootstrap-csgo.sh (install <GSLT> | update | repair)\n"
+    bootout "Example: bootstrap-csgo.sh install 93ECDE6B7526D1CAA699DA32D7E7DBB0\n"
+    bootout "Get a GSLT: https://steamcommunity.com/dev/managegameservers\n\n"
     exit 0
   fi
 
   if [ $1 == "install" ]; then
     # Get GSLT if it isn't set
     if [ -z $2 ]; then
-      bootout "No game server license token provided, run 'bootstrap-csgo.sh' for usage"
+      bootout "No game server license token provided, run 'bootstrap-csgo.sh' for usage\n"
+      bootout "Get a GSLT: https://steamcommunity.com/dev/managegameservers\n"
       exit 0
     fi
 
@@ -80,11 +83,15 @@ main() {
     if [ -n "$PKGS" ]; then yum install -y ${PKGS[@]}; fi
 
     # Create service account if it doesn't exist
+    bootout "Checking service account\n"
     if id "$SERVICE_USR" >/dev/null 2>&1; then
-      bootout "Checking service account\n"
+      bootout "Service account already exists\n"
+    else
+      bootout "Creating service account: $SERVICE_USR\n"
       useradd -d /home/$SERVICE_USR -m -s /bin/zsh $SERVICE_USR
     fi
 
+    # Add firewalld exceptions if it's installed
     CHK_FIREWALL=$(yum list installed | grep firewalld)
     if [ -n "$CHK_FIREWALL" ]; then
       bootout "Enabling and configuring firewalld\n"
