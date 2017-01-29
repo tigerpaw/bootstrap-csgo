@@ -1,5 +1,6 @@
 #!/bin/bash
-# curl -s https://raw.githubusercontent.com/tigerpaw/bootstrap-csgo/master/boostrap-csgo.sh | bash -s 93ECDE6B7526D1CAA699DA32D7E7DBB0
+# curl -s https://raw.githubusercontent.com/tigerpaw/bootstrap-csgo/master/boostrap-csgo.sh | bash -s <GAME_SERVER_LICENSE_TOKEN>
+# https://steamcommunity.com/dev/managegameservers
 
 SERVICE_USR="steam"
 INSTALL_DIR="/steam"
@@ -133,7 +134,7 @@ main() {
     echo "WorkingDirectory=/steam/csgo_ds" >> /etc/systemd/system/csgo.service
     echo "Environment=\"LD_LIBRARY_PATH=/steam/csgo_ds:/steam/csgo_ds/bin\"" >> /etc/systemd/system/csgo.service
     echo "EnvironmentFile=/steam/csgo_ds/.csgo-service-conf" >> /etc/systemd/system/csgo.service
-    echo "ExecStart=/steam/csgo_ds/srcds_run \${GAME} \${CONSOLE} \${USERCON} \${TOKEN} \${NETPORTTRY} \${GAMETYPE} \${GAMEMODE} \${MAPGROUP} \${MAP}" >> /etc/systemd/system/csgo.service
+    echo "ExecStart=/steam/csgo_ds/srcds_run \${AUTOUPDATE} \${GAME} \${CONSOLE} \${USERCON} \${TOKEN} \${NETPORTTRY} \${GAMETYPE} \${GAMEMODE} \${MAPGROUP} \${MAP}" >> /etc/systemd/system/csgo.service
     echo "Restart=always" >> /etc/systemd/system/csgo.service
     console-write "Reloading systemd"
     systemctl daemon-reload
