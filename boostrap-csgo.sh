@@ -58,6 +58,7 @@ main() {
       "firewalld"
       "firewalld-filesystem"
     )
+    PKGS=()
     # Check arch to determine C/C++ lib package, srcds always requires 32-bit
     if [ $(uname -m) == "x86_64" ]; then
       bootout "64-bit archictecture detected, forcing 32-bit C/C++ libraries\n"
@@ -67,7 +68,6 @@ main() {
       PKGS+=("glibc" "libstdc++")
     fi
     # Check if any of these packages are already installed
-    PKGS=()
     for i in "${CHK_PKGS[@]}"
     do
       CHK_PKG=$(yum list installed | grep $i)
