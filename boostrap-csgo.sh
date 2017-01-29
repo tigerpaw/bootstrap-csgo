@@ -30,8 +30,8 @@ main() {
   if [ $1 == "install" ]; then
     # Get GSLT if it isn't set
     if [ -z $2 ]; then
-      bootout "No game server license token provided, run 'bootstrap-csgo.sh' for usage\n"
-      bootout "Get a GSLT: https://steamcommunity.com/dev/managegameservers\n"
+      bootout "No game server license token provided\n"
+      bootout "Get a GSLT: https://steamcommunity.com/dev/managegameservers\n\n"
       exit 0
     fi
 
