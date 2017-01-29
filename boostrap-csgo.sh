@@ -10,6 +10,7 @@ INSTALL_DIR="/steam"
 SRCDS_DIR="$INSTALL_DIR/csgo_ds"
 CSGO_DIR="$SRCDS_DIR/csgo"
 STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"
+GSLTOKEN="0"
 
 main() {
   printf "CS:GO Dedicated Server Bootstrapper (v0.3) for RHEL/CentOS 7.x\n===\n"
@@ -19,9 +20,11 @@ main() {
   if [ -z "$CHK_RHEL" ]; then bootout "This tool is requires RHEL/CentOS 7.x\n" && exit 1; fi
 
   if [ $1 == "install" ]; then
-    # Get GSLT
-    read -p "Game Server License Token (GSLT): " GSLTOKEN
-    exit
+    # Get GSLT if it isn't set
+    if [ "$GSLTOKEN -eq "0" ]; then
+      read -p "Game Server License Token (GSLT): " GSLTOKEN
+    fi
+
     # Enable EPEL if it isn't enabled
     bootout "Enabling EPEL repository\n"
     CHK_EPEL=$(yum list installed | grep epel-release)
