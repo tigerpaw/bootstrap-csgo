@@ -65,7 +65,7 @@ main() {
         bootout "Marking $i for installation\n"
         PKGS+=("$i")
       else
-        bootout "Skipping $i, it's already installed\n"
+        bootout "Skipping $i\n"
       fi
     done
 
@@ -73,7 +73,7 @@ main() {
     if [ -n "$PKGS" ]; then yum install -y ${PKGS[@]}; fi
 
     # Create service account if it doesn't exist
-    if [ $(grep -c '^$SERVICE_USR:' /etc/passwd) == 0 ]; then
+    if id "$SERVICE_USR" >/dev/null 2>&1; then
       bootout "Checking service account\n"
       useradd -d /home/$SERVICE_USR -m -s /bin/zsh $SERVICE_USR
     fi
