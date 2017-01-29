@@ -19,9 +19,9 @@ main() {
   CHK_RHEL=$(cat /etc/redhat-release | grep 7)
   if [ -z "$CHK_RHEL" ]; then bootout "This tool is requires RHEL/CentOS 7.x\n" && exit 1; fi
 
-  if [ $1 == "install" ]; then
+  if [ $1=="install" ]; then
     # Get GSLT if it isn't set
-    if [ -n "$GSLTOKEN" ]; then
+    if [ -z "$GSLTOKEN" ]; then
       printf "Please enter your Game Server License Token (GSLT): "
       read GSLTOKEN
     fi
