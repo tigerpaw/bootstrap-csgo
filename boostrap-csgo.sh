@@ -15,13 +15,19 @@ GSLTOKEN="0"
 main() {
   printf "CS:GO Dedicated Server Bootstrapper (v0.3) for RHEL/CentOS 7.x\n===\n"
 
+  # Return usage on default call
+  if [ -z $1 ]; then
+    bootout "Usage: bootstrap-csgo.sh (install | update | repair)\n\n"
+    exit 0
+  fi
+
   # Check if RHEL/CentOS 7.x
   CHK_RHEL=$(cat /etc/redhat-release | grep 7)
   if [ -z "$CHK_RHEL" ]; then bootout "This tool is requires RHEL/CentOS 7.x\n" && exit 1; fi
 
   if [ $1 == "install" ]; then
     # Get GSLT if it isn't set
-    if [ "$GSLTOKEN -eq "0" ]; then
+    if [ "$GSLTOKEN" == "0" ]; then
       read -p "Game Server License Token (GSLT): " GSLTOKEN
     fi
 
