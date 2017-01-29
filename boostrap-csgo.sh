@@ -48,7 +48,15 @@ main() {
       "firewalld"
       "firewalld-filesystem"
     )
-
+    # Check arch to determine C/C++ lib package, srcds always requires 32-bit
+    if [ $(uname -m) == "x86_64" ]; then
+      bootout "64-bit archictecture detected, forcing 32-bit C/C++ libraries\n"
+      PKGS+=("glibc.i686" "libstdc++.i686")
+    else
+      bootout "32-bit architecture detected, using standard C/C++ libraries\n"
+      PKGS+=("glibc" "libstdc++")
+    fi
+    # Check if any of these packages are already installed
     PKGS=()
     for i in "${CHK_PKGS[@]}"
     do
@@ -60,15 +68,6 @@ main() {
         bootout "Skipping $i, it's already installed\n"
       fi
     done
-
-    # Check arch to determine C/C++ lib package, srcds always requires 32-bit
-    if [ $(uname -m) == "x86_64" ]; then
-      bootout "64-bit archictecture detected, forcing 32-bit C/C++ libraries\n"
-      PKGS+=("glibc.i686" "libstdc++.i686")
-    else
-      bootout "32-bit architecture detected, using standard C/C++ libraries\n"
-      PKGS+=("glibc" "libstdc++")
-    fi
 
     # Install packages
     if [ -n "$PKGS" ]; then yum install -y ${PKGS[@]}; fi
@@ -106,7 +105,7 @@ main() {
     # Install CS:GO
     if [ ! -d "$SRCDS_DIR" ]; then
       bootout "Installing CS:GO Dedicated Server\n"
-      ( sudo -u $SERVICE_USR exec "$INSTALL_DIR/steamcmd/steamcmd.sh" "+login anonymous" "+force_install_dir $SRCDS_DIR" "+app_update 740" "+quit" )
+      ( exec "$INSTALL_DIR/steamcmd/steamcmd.sh" "+login anonymous" "+force_install_dir $SRCDS_DIR" "+app_update 740 validate" "+quit" )
     fi
 
     # Build default configs if they don't exist
@@ -175,7 +174,8 @@ main() {
   fi
 
   # Fix permissions
-  if [ $1 == "repair"]; then
+  if [[ $1 == "repair" ]] || [[ $1 == "install" ]]; then
+    bootout "Changing ownership of $INSTALL_DIR to $SERVICE_USR\n"
     chown -R $SERVICE_USER:$SERVICE_USER $INSTALL_DIR
   fi
 
