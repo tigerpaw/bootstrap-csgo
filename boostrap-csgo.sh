@@ -141,7 +141,9 @@ function main() {
     # Create symlinks
     console_out "Creating symlinks... "
     if [ ! -d "/home/$SERVICE_USR/.steam" ]; then mkdir -p "/home/$SERVICE_USR/.steam/sdk32"; fi
-    ln -s $INSTALL_DIR/steamcmd/linux32/steamclient.so /home/$SERVICE_USR/.steam/sdk32/steamclient.so
+    if [ ! -L "/home/$SERVICE_USR/.steam/sdk32/steamclient.so" ]; then
+      ln -s $INSTALL_DIR/steamcmd/linux32/steamclient.so /home/$SERVICE_USR/.steam/sdk32/steamclient.so
+    fi
     printf "done\n"
 
     # Create addons dir
@@ -225,7 +227,7 @@ function main() {
   # Fix permissions
   if [[ $1 == "repair" ]] || [[ $1 == "install" ]]; then
     console_out "Changing ownership of $INSTALL_DIR to $SERVICE_USR\n"
-    chown -R $SERVICE_USR:$SERVICE_USR $INSTALL_DIR
+    chown -R $SERVICE_USR: $INSTALL_DIR
   fi
 
   console_out "Complete!\n"
@@ -236,8 +238,8 @@ function console_out() {
 }
 
 function csgo_update() {
+  chown -R $SERVICE_USR: $INSTALL_DIR
   (
-    cd $INSTALL_DIR
     sudo -u $SERVICE_USR "$INSTALL_DIR/steamcmd/steamcmd.sh" "+login anonymous" "+force_install_dir $SRCDS_DIR" "+app_update 740 validate" "+quit"
   )
 }
