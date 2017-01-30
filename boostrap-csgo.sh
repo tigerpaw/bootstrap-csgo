@@ -1,6 +1,6 @@
 #!/bin/bash
 # bootstrap-csgo.sh
-# Version 0.4.3
+# Version 0.4.4
 # -
 # curl -s https://raw.githubusercontent.com/tigerpaw/bootstrap-csgo/master/boostrap-csgo.sh | bash -s (install <GAME_SERVER_LICENSE_TOKEN> | update | repair)
 # Get a Game Server License Token: https://steamcommunity.com/dev/managegameservers
@@ -15,7 +15,7 @@ STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.ta
 GSLTOKEN="$2"
 
 function main() {
-  printf "CS:GO Dedicated Server Bootstrapper (v0.4.3) for RHEL/CentOS 7.x\n===\n"
+  printf "CS:GO Dedicated Server Bootstrapper (v0.4.4) for RHEL/CentOS 7.x\n===\n"
 
   # Check if RHEL/CentOS 7.x
   CHK_RHEL=$(cat /etc/redhat-release | grep 7)
@@ -49,7 +49,7 @@ function main() {
   esac
 
   if [ $1 == "install" ]; then
-    console_out "Hold onto your butts."
+    console_out "Hold onto your butts.\n"
     # Is EPEL enabled?
     CHK_EPEL=$(yum list installed | grep epel-release)
     if [ -z "$CHK_EPEL" ]; then
@@ -236,7 +236,10 @@ function console_out() {
 }
 
 function csgo_update() {
-  sudo -u $SERVICE_USR "$INSTALL_DIR/steamcmd/steamcmd.sh" "+login anonymous" "+force_install_dir $SRCDS_DIR" "+app_update 740 validate" "+quit"
+  (
+    cd $INSTALL_DIR
+    sudo -u $SERVICE_USR "$INSTALL_DIR/steamcmd/steamcmd.sh" "+login anonymous" "+force_install_dir $SRCDS_DIR" "+app_update 740 validate" "+quit"
+  )
 }
 
 # Incomplete
