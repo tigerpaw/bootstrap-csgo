@@ -1,6 +1,6 @@
 #!/bin/bash
 # bootstrap-csgo.sh
-# Version 0.4.0
+# Version 0.4.1
 # -
 # curl -s https://raw.githubusercontent.com/tigerpaw/bootstrap-csgo/master/boostrap-csgo.sh | bash -s (install <GAME_SERVER_LICENSE_TOKEN> | update | repair)
 # Get a Game Server License Token: https://steamcommunity.com/dev/managegameservers
@@ -15,7 +15,7 @@ STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.ta
 GSLTOKEN="$2"
 
 function main() {
-  printf "CS:GO Dedicated Server Bootstrapper (v0.4.0) for RHEL/CentOS 7.x\n===\n"
+  printf "CS:GO Dedicated Server Bootstrapper (v0.4.1) for RHEL/CentOS 7.x\n===\n"
 
   # Check if RHEL/CentOS 7.x
   CHK_RHEL=$(cat /etc/redhat-release | grep 7)
@@ -49,10 +49,12 @@ function main() {
   esac
 
   if [ $1 == "install" ]; then
-    # Enable EPEL if it isn't enabled
-    console_out "Enabling EPEL repository\n"
+    # Is EPEL enabled?
     CHK_EPEL=$(yum list installed | grep epel-release)
-    if [ -z "$CHK_EPEL" ]; then yum install -y epel-release; fi
+    if [ -z "$CHK_EPEL" ]; then
+      console_out "Enabling EPEL repository\n"
+      yum install -y epel-release
+    fi
 
     # Update binaries
     console_out "Running Sytem Update\n"
