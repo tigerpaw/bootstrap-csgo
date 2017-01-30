@@ -1,6 +1,6 @@
 #!/bin/bash
 # bootstrap-csgo.sh
-# Version 0.4.1
+# Version 0.4.2
 # -
 # curl -s https://raw.githubusercontent.com/tigerpaw/bootstrap-csgo/master/boostrap-csgo.sh | bash -s (install <GAME_SERVER_LICENSE_TOKEN> | update | repair)
 # Get a Game Server License Token: https://steamcommunity.com/dev/managegameservers
@@ -15,7 +15,7 @@ STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.ta
 GSLTOKEN="$2"
 
 function main() {
-  printf "CS:GO Dedicated Server Bootstrapper (v0.4.1) for RHEL/CentOS 7.x\n===\n"
+  printf "CS:GO Dedicated Server Bootstrapper (v0.4.2) for RHEL/CentOS 7.x\n===\n"
 
   # Check if RHEL/CentOS 7.x
   CHK_RHEL=$(cat /etc/redhat-release | grep 7)
@@ -141,6 +141,8 @@ function main() {
     console_out "Creating symlinks... "
     if [ ! -d "/home/$SERVICE_USR/.steam" ]; then mkdir -p "/home/$SERVICE_USR/.steam/sdk32"; fi
     ln -s $INSTALL_DIR/steamcmd/linux32/steamclient.so /home/$SERVICE_USR/.steam/sdk32/steamclient.so
+    if [ ! -d "/root/.steam" ]; then mkdir -p "/home/$SERVICE_USR/.steam/sdk32"; fi
+    ln -s $INSTALL_DIR/steamcmd/linux32/steamclient.so /root/.steam/sdk32/steamclient.so
     printf "done\n"
 
     # Create addons dir
