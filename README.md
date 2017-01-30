@@ -11,4 +11,4 @@ Start: `systemctl start csgo`
 
 Restart: `systemctl restart csgo`
 
-Monitor Console: `journalctl --unit=csgo | tail -50`
+Check Console: `journalctl --unit=csgo | tail -50`
